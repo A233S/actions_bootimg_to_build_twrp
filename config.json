@@ -1,16 +1,16 @@
 {
   "twrp_url": "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni",
   "twrp_branch": "twrp-8.1",
-  "git_username": "135e2",
-  "git_email": "shangshangzikun@gmail.com",
+  "git_username": "a233s",
+  "git_email": "qq2136602722@gmail.com",
   "use_own_dt": true,
   "dt_url": "gt-o/android_device_huawei_hwcan",
   "dt_branch": "android-8.1",
   "dt_remote": "github",
   "dt_path": "device/huawei/hwcan",
   "device_code": "hwcan",
-  "fix_product": true,
-  "fix_misscom": true,
+  "fix_product": false,
+  "fix_misscom": false,
   "fix_busybox": false,
   "fix_branch": "android-8.1"
 }
