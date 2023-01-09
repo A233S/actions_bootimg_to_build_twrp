@@ -86,7 +86,7 @@ jobs:
         device_code=$(ls)
         echo "::set-output name=device_code::$(ls)"
         cd $home
-        cp -r ./dt/$brand ./${{ steps.pwd.outputs.pwd }}/device/
+        cp -r ./dt/$brand ${{ steps.pwd.outputs.pwd }}/device/
       id: dt
     - name: Fix cannot locate product
       if: steps.var.outputs.fix_product == 'true'
