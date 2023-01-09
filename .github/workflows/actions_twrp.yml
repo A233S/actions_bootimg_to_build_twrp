@@ -35,6 +35,7 @@ jobs:
         echo "::set-output name=twrp_branch::$(jq -r '.twrp_branch' config.json)"
         echo "::set-output name=git_username::$(jq -r '.git_username' config.json)"
         echo "::set-output name=git_email::$(jq -r '.git_email' config.json)"
+        echo "::set-output name=bootimg_url::$(jq -r '.bootimg_url' config.json)"
         echo "::set-output name=fix_product::$(jq -r '.fix_product' config.json)"
         echo "::set-output name=fix_misscom::$(jq -r '.fix_misscom' config.json)"
         echo "::set-output name=fix_busybox::$(jq -r '.fix_busybox' config.json)"
