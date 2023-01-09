@@ -69,11 +69,11 @@ jobs:
       run: |
         PATH=~/bin:$PATH
         cd workspace
-        #repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
-        git clone https://gitlab.com/OrangeFox/sync.git
-        cd ./sync/
-        ./orangefox_sync.sh --branch 12.1 --path ../
-        cd ..
+        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+        #git clone https://gitlab.com/OrangeFox/sync.git
+        #cd ./sync/
+        #./orangefox_sync.sh --branch 12.1 --path ../
+        #cd ..
         ls -al
     - name: use boot to make your own device tree
       run: |
