@@ -69,7 +69,11 @@ jobs:
       run: |
         PATH=~/bin:$PATH
         cd workspace
-        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+        #repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+        git clone https://gitlab.com/OrangeFox/sync.git
+        cd ./sync/
+        ./orangefox_sync.sh --branch 12.1 --path ../
+        cd ..
         ls -al
     - name: use boot to make your own device tree
       run: |
@@ -100,6 +104,8 @@ jobs:
         cd ${{ steps.pwd.outputs.pwd }}
         tree device
         export ALLOW_MISSING_DEPENDENCIES=true
+        export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
+        export LC_ALL="C"
         source build/envsetup.sh
         lunch omni_${{ steps.dt.outputs.device_code }}-eng 
         mka recoveryimage -j$(nproc --all)
