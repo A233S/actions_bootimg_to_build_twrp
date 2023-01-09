@@ -36,12 +36,6 @@ jobs:
         echo "::set-output name=twrp_branch::$(jq -r '.twrp_branch' config.json)"
         echo "::set-output name=git_username::$(jq -r '.git_username' config.json)"
         echo "::set-output name=git_email::$(jq -r '.git_email' config.json)"
-        echo "::set-output name=use_own_dt::$(jq -r '.use_own_dt' config.json)"
-        echo "::set-output name=dt_url::$(jq -r '.dt_url' config.json)"
-        echo "::set-output name=dt_remote::$(jq -r '.dt_remote' config.json)"
-        echo "::set-output name=dt_branch::$(jq -r '.dt_branch' config.json)"
-        echo "::set-output name=dt_path::$(jq -r '.dt_path' config.json)"
-        echo "::set-output name=device_code::$(jq -r '.device_code' config.json)"
         echo "::set-output name=fix_product::$(jq -r '.fix_product' config.json)"
         echo "::set-output name=fix_misscom::$(jq -r '.fix_misscom' config.json)"
         echo "::set-output name=fix_busybox::$(jq -r '.fix_busybox' config.json)"
@@ -65,16 +59,28 @@ jobs:
     - name: Fix busybox bug
       if: steps.var.outputs.fix_busybox == 'true'
       run: cp repair/omni-9.0/busybox.xml workspace/.repo/local_manifests/
-    - name: use boot to make your own device tree
-      run: |
-        cd workspace
-        
     - name: Repo sync
       run: |
         PATH=~/bin:$PATH
         cd workspace
         repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
         ls -al
+    - name: use boot to make your own device tree
+      run: |
+        home=$(pwd)
+        sudo apt update
+        sudo apt -y install python python3 python-pip python3-pip cpio wget
+        pip3 install twrpdtgen
+        mkdir dt
+        python3 -m twrpdtgen -o dt/ boot.img
+        cd dt
+        brand=$(ls)
+        cd $brand
+        device_code=$(ls)
+        echo "::set-output name=device_code::$(ls)"
+        cd $home
+        cp -r ./dt/$brand ./${{ steps.pwd.outputs.pwd }}/device/
+      id: dt
     - name: Fix cannot locate product
       if: steps.var.outputs.fix_product == 'true'
       run: |
@@ -88,7 +94,7 @@ jobs:
         tree device
         export ALLOW_MISSING_DEPENDENCIES=true
         source build/envsetup.sh
-        lunch omni_${{ steps.var.outputs.device_code }}-eng 
+        lunch omni_${{ steps.dt.outputs.device_code }}-eng 
         mka recoveryimage -j$(nproc --all)
     - name: Setup tmate session
       if: ${{ failure() }}
