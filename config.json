@@ -3,7 +3,6 @@
   "twrp_branch": "twrp-8.1",
   "git_username": "a233s",
   "git_email": "qq2136602722@gmail.com",
-  "device_code": "hwcan",
   "fix_product": false,
   "fix_misscom": false,
   "fix_busybox": false,
