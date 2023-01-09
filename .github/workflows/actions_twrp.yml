@@ -1,7 +1,6 @@
 name: twrp-building
 on:
-  watch:
-    types: [started]
+  workflow_dispatch
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
