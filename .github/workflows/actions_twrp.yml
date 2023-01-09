@@ -1,6 +1,12 @@
 name: twrp-building
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled'     
+        required: false
+        default: true
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
@@ -98,7 +104,7 @@ jobs:
         lunch omni_${{ steps.dt.outputs.device_code }}-eng 
         mka recoveryimage -j$(nproc --all)
     - name: Setup tmate session
-      if: ${{ failure() }}
+      if: ${{ failure()  && inputs.debug_enabled }}
       uses: mxschmitt/action-tmate@v3
       timeout-minutes: 15
     - name: Upload TWRP
